@@ -2,7 +2,6 @@
   apt:
     pkg: zabbix_agent2
     state: absent
-    update: true
 
 - name: install zabbix-agentd
   apt:

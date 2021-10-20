@@ -2,11 +2,12 @@
   apt:
     pkg: zabbix_agentd
     state: absent
-    update: true
 
 - name: install zabbix-agent2
   apt:
     pkg: zabbix_agent2
+    update_cache: true
+    autoclean: true
 
 - name: config zabbix_agent2
   template:
