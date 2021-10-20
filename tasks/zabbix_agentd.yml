@@ -6,6 +6,8 @@
 - name: install zabbix-agentd
   apt:
     pkg: zabbix_agentd
+    update_cache: true
+    autoclean: true
 
 - name: template zabbix_agentd
   template:
