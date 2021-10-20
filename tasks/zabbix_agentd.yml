@@ -1,0 +1,25 @@
+- name: delete zabbix-agent2
+  apt:
+    pkg: zabbix_agent2
+    state: absent
+    update: true
+
+- name: install zabbix-agentd
+  apt:
+    pkg: zabbix_agentd
+
+- name: template zabbix_agentd
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+  register: zabbix_config
+
+- name: restart zabbix-agent
+  service:
+    name: zabbix-agent
+    state: restarted
+    enabled: yes
+  when: zabbix_config.changed

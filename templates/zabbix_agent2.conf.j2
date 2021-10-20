@@ -1,0 +1,603 @@
+#Generated with Ansible. Do not manually edit this file!
+#/etc/ansible/roles/zbx/templates/zabbix_agent2.conf.j2
+#File version 0.01
+
+Hostname={{ inventory_hostname }}
+
+Server={{ zabbix_server }}
+ServerActive={{ zabbix_server_active }}
+
+ListenIP={{ zabbix_listen_ip }}
+
+PidFile=/var/run/zabbix/zabbix_agent2.pid
+ControlSocket=/var/run/zabbix/zabbix_agent2.sock
+
+LogFile=/var/log/zabbix/zabbix_agent2.log
+LogFileSize=0
+
+# SourceIP=
+
+Include=/etc/zabbix/zabbix_agent2.d/*.conf
+
+####### TLS-RELATED PARAMETERS #######
+
+### Option: TLSConnect
+#	How the agent should connect to server or proxy. Used for active checks.
+#	Only one value can be specified:
+#		unencrypted - connect without encryption
+#		psk         - connect using TLS and a pre-shared key
+#		cert        - connect using TLS and a certificate
+#
+# Mandatory: yes, if TLS certificate or PSK parameters are defined (even for 'unencrypted' connection)
+# Default:
+# TLSConnect=unencrypted
+
+### Option: TLSAccept
+#	What incoming connections to accept.
+#	Multiple values can be specified, separated by comma:
+#		unencrypted - accept connections without encryption
+#		psk         - accept connections secured with TLS and a pre-shared key
+#		cert        - accept connections secured with TLS and a certificate
+#
+# Mandatory: yes, if TLS certificate or PSK parameters are defined (even for 'unencrypted' connection)
+# Default:
+# TLSAccept=unencrypted
+
+### Option: TLSCAFile
+#	Full pathname of a file containing the top-level CA(s) certificates for
+#	peer certificate verification.
+#
+# Mandatory: no
+# Default:
+# TLSCAFile=
+
+### Option: TLSCRLFile
+#	Full pathname of a file containing revoked certificates.
+#
+# Mandatory: no
+# Default:
+# TLSCRLFile=
+
+### Option: TLSServerCertIssuer
+#		Allowed server certificate issuer.
+#
+# Mandatory: no
+# Default:
+# TLSServerCertIssuer=
+
+### Option: TLSServerCertSubject
+#		Allowed server certificate subject.
+#
+# Mandatory: no
+# Default:
+# TLSServerCertSubject=
+
+### Option: TLSCertFile
+#	Full pathname of a file containing the agent certificate or certificate chain.
+#
+# Mandatory: no
+# Default:
+# TLSCertFile=
+
+### Option: TLSKeyFile
+#	Full pathname of a file containing the agent private key.
+#
+# Mandatory: no
+# Default:
+# TLSKeyFile=
+
+### Option: TLSPSKIdentity
+#	Unique, case sensitive string used to identify the pre-shared key.
+#
+# Mandatory: no
+# Default:
+# TLSPSKIdentity=
+
+### Option: TLSPSKFile
+#	Full pathname of a file containing the pre-shared key.
+#
+# Mandatory: no
+# Default:
+# TLSPSKFile=
+
+####### PLUGIN-SPECIFIC PARAMETERS #######
+
+### Option: Plugins
+#	A plugin can have one or more plugin specific configuration parameters in format:
+#     Plugins.<PluginName>.<Parameter1>=<value1>
+#     Plugins.<PluginName>.<Parameter2>=<value2>
+#
+# Mandatory: no
+# Range:
+# Default:
+
+### Option: Plugins.Log.MaxLinesPerSecond
+#	Maximum number of new lines the agent will send per second to Zabbix Server
+#	or Proxy processing 'log' and 'logrt' active checks.
+#	The provided value will be overridden by the parameter 'maxlines',
+#	provided in 'log' or 'logrt' item keys.
+#
+# Mandatory: no
+# Range: 1-1000
+# Default:
+# Plugins.Log.MaxLinesPerSecond=20
+
+### Option: AllowKey
+#	Allow execution of item keys matching pattern.
+#	Multiple keys matching rules may be defined in combination with DenyKey.
+#	Key pattern is wildcard expression, which support "*" character to match any number of any characters in certain position. It might be used in both key name and key arguments.
+#	Parameters are processed one by one according their appearance order.
+#	If no AllowKey or DenyKey rules defined, all keys are allowed.
+#
+# Mandatory: no
+
+### Option: DenyKey
+#	Deny execution of items keys matching pattern.
+#	Multiple keys matching rules may be defined in combination with AllowKey.
+#	Key pattern is wildcard expression, which support "*" character to match any number of any characters in certain position. It might be used in both key name and key arguments.
+#	Parameters are processed one by one according their appearance order.
+#	If no AllowKey or DenyKey rules defined, all keys are allowed.
+#       Unless another system.run[*] rule is specified DenyKey=system.run[*] is added by default.
+#
+# Mandatory: no
+# Default:
+# DenyKey=system.run[*]
+
+### Option: Plugins.SystemRun.LogRemoteCommands
+#	Enable logging of executed shell commands as warnings.
+#	0 - disabled
+#	1 - enabled
+#
+# Mandatory: no
+# Default:
+# Plugins.SystemRun.LogRemoteCommands=0
+
+### Option: Plugins.Docker.Endpoint
+#	Docker API endpoint.
+#
+# Mandatory: no
+# Default: unix:///var/run/docker.sock
+# Plugins.Docker.Endpoint=unix:///var/run/docker.sock
+
+### Option: Plugins.Ceph.InsecureSkipVerify
+#	InsecureSkipVerify controls whether an http client verifies the	server's certificate chain and host name.
+#	If InsecureSkipVerify is true, TLS accepts any certificate presented by the server and any host name
+#	in that certificate. In this mode, TLS is susceptible to man-in-the-middle attacks.
+#	This should be used only for testing.
+#
+# Mandatory: no
+# Range: false | true
+# Default:
+# Plugins.Ceph.InsecureSkipVerify=false
+
+### Option: Plugins.Ceph.KeepAlive
+#	Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Ceph.KeepAlive=300
+
+### Option: Plugins.Ceph.Timeout
+#	The maximum time in seconds for waiting when a request has to be done.
+#	The timeout includes connection time, any redirects, and reading the response body.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Ceph.Timeout=<Global timeout>
+
+### Option: Plugins.Ceph.Sessions.*.ApiKey
+#	ApiKey to be used for connectione. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Ceph.Sessions.*.ApiKey=
+
+### Option: Plugins.Ceph.Sessions.*.User
+#	Username to be used for connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Ceph.Sessions.*.User=
+
+### Option: Plugins.Ceph.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   The only supported schema is "https".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Ceph.Sessions.*.Uri=
+
+### Option: Plugins.Docker.Timeout
+#	The maximum time (in seconds) for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Docker.Timeout=<Global timeout>
+
+### Option: Plugins.Memcached.Timeout
+#	The maximum time (in seconds) for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Memcached.Timeout=<Global timeout>
+
+### Option: Plugins.Memcached.KeepAlive
+#	Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Memcached.KeepAlive=300
+
+### Option: Plugins.Memcached.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   Supported schemas: "tcp" and "unix".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Memcached.Sessions.*.Uri=
+
+### Option: Plugins.Memcached.Sessions.*.User
+#	Username to send to protected Memcached server. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Memcached.Sessions.*.User=
+
+### Option: Plugins.Memcached.Sessions.*.Password
+#	Password to send to protected Memcached server. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Memcached.Sessions.*.Password=
+
+### Option: Plugins.Mongo.Timeout
+#	Amount of time to wait for a server to respond when first connecting and on
+#   follow up operations in the session.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Mongo.Timeout=<Global timeout>
+
+### Option: Plugins.Mongo.KeepAlive
+#	Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Mongo.KeepAlive=300
+
+### Option: Plugins.Mongo.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   The only supported schema is "tcp".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Mongo.Sessions.*.Uri=
+
+### Option: Plugins.Mongo.Sessions.*.User
+#	Username to send to protected MongoDB server. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mongo.Sessions.*.User=
+
+### Option: Plugins.Mongo.Sessions.*.Password
+#	Password to send to protected MongoDB server. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mongo.Sessions.*.Password=
+
+### Option: Plugins.Mysql.CallTimeout
+#	The maximum time in seconds for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Mysql.CallTimeout=<Global timeout>
+
+### Option: Plugins.Mysql.Timeout
+#	The maximum time in seconds for waiting when a connection has to be established.
+#
+# Mandatory: no
+# Range: 1-30
+# Default: global timeout
+
+### Option: Plugins.Mysql.KeepAlive
+#	Time (in seconds) to wait before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Mysql.KeepAlive=300
+
+### Option: Plugins.Mysql.Sessions.*.Uri
+#	Connection string. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range: Must matches the URI format.
+# Default:
+# Plugins.Mysql.Sessions.*.Uri=
+
+### Option: Plugins.Mysql.Sessions.*.User
+#	Username to be used for MySQL authentication. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.User=
+
+### Option: Plugins.Mysql.Sessions.*.Password
+#	Password to be used for MySQL authentication. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.Password=
+
+### Option: Plugins.Mysql.Sessions.*.TLSConnect
+#	Encryption type for MySQL connection. "*" should be replaced with a session name.
+#		tls connection required     - required
+#		verifies certificates       - verify_ca
+#		verify certificates and ip  - verify_full
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.TLSConnect=
+
+### Option: Plugins.Mysql.Sessions.*.TLSCAFile
+#	Full pathname of a file containing the top-level CA(s) certificates for mysql
+#	peer certificate verification.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.TLSCAFile=
+
+### Option: Plugins.Mysql.Sessions.*.TLSCertFile
+#	Full pathname of a file containing the mysql certificate or certificate chain.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.TLSCertFile=
+
+### Option: Plugins.Mysql.Sessions.*.TLSKeyFile
+#	Full pathname of a file containing the mysql private key.
+#
+# Mandatory: no
+# Default:
+# Plugins.Mysql.Sessions.*.TLSKeyFile=
+
+### Option: Plugins.Oracle.CallTimeout
+#	The maximum time in seconds for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Oracle.CallTimeout=<Global timeout>
+
+### Option: Plugins.Oracle.ConnectTimeout
+#	The maximum time in seconds for waiting when a connection has to be established.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Oracle.ConnectTimeout=<Global timeout>
+
+### Option: Plugins.Oracle.CustomQueriesPath
+#	Full pathname of a directory containing *.sql* files with custom queries.
+#
+# Mandatory: no
+# Default:
+# Plugins.Oracle.CustomQueriesPath=
+
+### Option: Plugins.Oracle.KeepAlive
+#	Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Oracle.KeepAlive=300
+
+### Option: Plugins.Oracle.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   The only supported schema is "tcp".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Oracle.Sessions.*.Uri=
+
+### Option: Plugins.Oracle.Sessions.*.Service
+#	Service name to be used for connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range: SID is not supported.
+# Default:
+# Plugins.Oracle.Sessions.*.Service=
+
+### Option: Plugins.Oracle.Sessions.*.User
+#	Username to be used for connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Oracle.Sessions.*.User=
+
+### Option: Plugins.Oracle.Sessions.*.Password
+#	Password to be used for connectione. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Oracle.Sessions.*.Password=
+
+### Option: Plugins.Postgres.CallTimeout
+#	The maximum time in seconds for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Postgres.CallTimeout=<Global timeout>
+
+### Option: Plugins.Postgres.Timeout
+#	The maximum time in seconds for waiting when a connection has to be established.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Postgres.Timeout=<Global timeout>
+
+### Option: Plugins.Postgres.KeepAlive
+#   Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Postgres.KeepAlive=300
+
+### Option: Plugins.Postgres.CustomQueriesPath
+#	Full pathname of a directory containing *.sql* files with custom queries.
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.CustomQueriesPath=
+
+### Option: Plugins.Postgres.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   Supported schemas: "tcp" and "unix".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Postgres.Sessions.*.Uri=
+
+### Option: Plugins.Postgres.Sessions.*.User
+#	Username for session connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range: Must matches PostgreSQL user name.
+# Default:
+# Plugins.Postgres.Sessions.*.User=
+
+### Option: Plugins.Postgres.Sessions.*.Password
+#	Password for session connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range: Must matches the Password format.
+# Default:
+# Plugins.Postgres.Sessions.*.Password=
+
+### Option: Plugins.Postgres.Sessions.*.Database
+#	Database for session connection. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.Sessions.*.Database=
+
+### Option: Plugins.Postgres.Sessions.*.TLSConnect
+#	Encryption type for Postgres connection. "*" should be replaced with a session name.
+#		tls connection required     - required
+#		verifies certificates       - verify_ca
+#		verify certificates and ip  - verify_full
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.Sessions.*.TLSConnect=
+
+### Option: Plugins.Postgres.Sessions.*.TLSCAFile
+#	Full pathname of a file containing the top-level CA(s) certificate
+#	peer certificate verification.
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.Sessions.*.TLSCAFile=
+
+### Option: Plugins.Postgres.Sessions.*.TLSCertFile
+#	Full pathname of a file containing the postgres certificate or certificate chain.
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.Sessions.*.TLSCertFile=
+
+### Option: Plugins.Postgres.Sessions.*.TLSKeyFile
+#	Full pathname of a file containing the postgres private key.
+#
+# Mandatory: no
+# Default:
+# Plugins.Postgres.Sessions.*.TLSKeyFile=
+
+### Option: Plugins.Redis.Uri
+#	Uri to connect. Can be overwritten by the first parameter of an item's key.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   Supported schemas: "tcp" and "unix".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Redis.Uri=tcp://localhost:6379
+
+### Option: Plugins.Redis.Timeout
+#	The maximum time (in seconds) for waiting when a request has to be done.
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Plugins.Redis.Timeout=<Global timeout>
+
+### Option: Plugins.Redis.KeepAlive
+#	Time in seconds for waiting before unused connections will be closed.
+#
+# Mandatory: no
+# Range: 60-900
+# Default:
+# Plugins.Redis.KeepAlive=300
+
+### Option: Plugins.Redis.Sessions.*.Uri
+#	Uri to connect. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Range:
+#   Must matches the URI format.
+#   Supported schemas: "tcp" and "unix".
+#   Embedded credentials will be ignored.
+# Default:
+# Plugins.Redis.Sessions.*.Uri=
+
+### Option: Plugins.Redis.Sessions.*.Password
+#	Password to send to protected Redis server. "*" should be replaced with a session name.
+#
+# Mandatory: no
+# Default:
+# Plugins.Redis.Sessions.*.Password=
+
+### Option: Plugins.Smart.Timeout
+#	The maximum time in seconds for waiting before smartctl execution is terminated.
+#	The timeout is for a single smartctl command line execution.
+#
+# Mandatory: no
+# Range: 1-30
+# Default: <Global timeout>
+# Plugins.Smart.Timeout=
+
+### Option: Plugins.Smart.Path
+#	Path to smartctl executable.
+#
+# Mandatory: no
+# Default: smartctl
+# Plugins.Smart.Path=
