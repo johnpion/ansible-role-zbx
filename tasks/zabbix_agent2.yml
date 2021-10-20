@@ -5,7 +5,7 @@
 
 - name: install zabbix-agent2
   apt:
-    pkg: zabbix_agent2
+    pkg: zabbix-agent2
     update_cache: true
     autoclean: true
 
