@@ -1,12 +1,25 @@
 - name: install apt repo for zabbix 5.0
   apt:
-    deb: "https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+{{ ansible_distribution_release }}_all.deb"
+    deb: "http://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+{{ ansible_distribution_release }}_all.deb"
   register: zbx_install_apt_repo
 
 - name: apt update
   apt:
     update_cache: yes
   when: zbx_install_apt_repo is changed
+
+- name: set zabbix_agent_version for Debian Jessie
+  set_fact:
+    zabbix_agent_version: 1
+  when: ansible_distribution_release == 'jessie'
+
+- name: create /etc/zabbix/
+  file:
+    path: /etc/zabbix/
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
 
 - name: zabbix_agentd (legacy)
   include: zabbix_agentd.yml
@@ -16,40 +29,39 @@
   include: zabbix_agent2.yml
   when: zabbix_agent_version == 2
 
-# - name: create log folder
-#   file:
-#     path: /var/log/zabbix-agent/
-#     state: directory
-#     owner: zabbix
-#     group: zabbix
-#     mode: 0750
+- name: register zabbix-agent
+  local_action:
+    module: zabbix_host
+    server_url: "{{ zabbix_url }}"
+    login_user: "{{ zabbix_user|default('ansible') }}"
+    login_password: "{{ zabbix_api_password }}"
+    host_name: "{{ inventory_hostname }}"
+    host_groups: "{{ zabbix_group }}"
+    link_templates: "{{ zabbix_templates }}"
+    interfaces:
+      - ip: "{{ zabbix_listen_ip }}"
+        type: 1
+        useip: 1
+        main: 1
+    tls_psk_identity: "{{ inventory_hostname }}"
+    tls_connect: 2
+    tls_psk: "{{ zabbix_password }}"
+  when: zabbix_password is defined
+  no_log: true
 
-# - name: template zabbix_agentd.psk
-#   template:
-#     src: zabbix_agentd.psk.j2
-#     dest: /etc/zabbix/zabbix_agentd.psk
-#     owner: zabbix
-#     group: zabbix
-#     mode: 0640
-#   when: zabbix_password is defined
-#   register: zabbix_password_file
-
-# - name: check local configs
-#   delegate_to: localhost
-#   stat:
-#     path: files/{{ inventory_hostname }}/zbx
-#   register: zabbix_config_files
-#
-# - name: copy userparameter.conf
-#   synchronize:
-#     src: files/{{ inventory_hostname }}/zbx/
-#     dest: /etc/zabbix/zabbix_agentd.conf.d/
-#   when: zabbix_config_files.stat.exists
-#   register: zabbix_config_synchronize
-#
-# - name: chown configs
-#   file:
-#     owner: zabbix
-#     group: zabbix
-#     recurse: true
-#     path: /etc/zabbix
+- name: register zabbix-agent
+  local_action:
+    module: zabbix_host
+    server_url: "{{ zabbix_url }}"
+    login_user: "{{ zabbix_user|default('ansible') }}"
+    login_password: "{{ zabbix_api_password }}"
+    host_name: "{{ inventory_hostname }}"
+    host_groups: "{{ zabbix_group }}"
+    link_templates: "{{ zabbix_templates }}"
+    interfaces:
+      - ip: "{{ zabbix_listen_ip }}"
+        type: 1
+        useip: 1
+        main: 1
+  when: not zabbix_password is defined
+  no_log: true

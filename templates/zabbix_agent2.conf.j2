@@ -1,6 +1,6 @@
 #Generated with Ansible. Do not manually edit this file!
 #/etc/ansible/roles/zbx/templates/zabbix_agent2.conf.j2
-#File version 0.01
+#File version 0.02
 
 Hostname={{ inventory_hostname }}
 
@@ -31,6 +31,9 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 # Mandatory: yes, if TLS certificate or PSK parameters are defined (even for 'unencrypted' connection)
 # Default:
 # TLSConnect=unencrypted
+{% if zabbix_password is defined %}
+TLSConnect=psk
+{% endif %}
 
 ### Option: TLSAccept
 #	What incoming connections to accept.
@@ -42,6 +45,9 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 # Mandatory: yes, if TLS certificate or PSK parameters are defined (even for 'unencrypted' connection)
 # Default:
 # TLSAccept=unencrypted
+{% if zabbix_password is defined %}
+TLSAccept=psk
+{% endif %}
 
 ### Option: TLSCAFile
 #	Full pathname of a file containing the top-level CA(s) certificates for
@@ -92,6 +98,9 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 # Mandatory: no
 # Default:
 # TLSPSKIdentity=
+{% if zabbis_tls_psk_identity is defined %}
+TLSPSKIdentity={{ inventory_hostname }}
+{% endif %}
 
 ### Option: TLSPSKFile
 #	Full pathname of a file containing the pre-shared key.
@@ -99,6 +108,9 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 # Mandatory: no
 # Default:
 # TLSPSKFile=
+{% if zabbix_password is defined %}
+TLSPSKFile=/etc/zabbix_agentd.psk
+{% endif %}
 
 ####### PLUGIN-SPECIFIC PARAMETERS #######
 

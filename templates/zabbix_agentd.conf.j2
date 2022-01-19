@@ -1,6 +1,6 @@
 #Generated with Ansible. Do not manually edit this file!
 #/etc/ansible/roles/zbx/templates/zabbix_agentd.conf.j2
-#File version 0.01
+#File version 0.02
 
 Hostname={{ inventory_hostname }}
 
@@ -9,9 +9,9 @@ ServerActive={{ zabbix_server_active }}
 
 ListenIP={{ zabbix_listen_ip }}
 
-LogFile=/var/log/zabbix-agent/zabbix_agentd.log
+LogFile=/var/log/zabbix/zabbix_agentd.log
 PidFile=/var/run/zabbix/zabbix_agentd.pid
-Include=/etc/zabbix/zabbix_agentd.conf.d
+Include=/etc/zabbix/zabbix_agentd.d
 
 {% if zabbix_password is defined %}
 TLSConnect=psk

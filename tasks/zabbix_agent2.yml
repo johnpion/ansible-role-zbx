@@ -1,26 +1,25 @@
 - name: delete zabbix-agentd
   apt:
-    pkg: zabbix_agentd
+    pkg:
+      - zabbix_agent
+      - zabbix_agentd
+      - zabbix-agent
     state: absent
+
+- name: config zabbix-agent2
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/zabbix/{{ item }}"
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+  loop:
+    - zabbix_agent2.conf
+    - zabbix_agent2.psk
+  notify: restart zabbix_agent
 
 - name: install zabbix-agent2
   apt:
     pkg: zabbix-agent2
     update_cache: true
     autoclean: true
-
-- name: config zabbix_agent2
-  template:
-    src: zabbix_agent2.conf.j2
-    dest: /etc/zabbix/zabbix_agent2.conf
-    owner: zabbix
-    group: zabbix
-    mode: 0640
-  register: zabbix_config
-
-- name: restart zabbix-agent2
-  service:
-    name: zabbix-agent2
-    state: restarted
-    enabled: yes
-  when: zabbix_config.changed
