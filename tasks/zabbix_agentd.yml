@@ -4,6 +4,13 @@
     state: absent
   when: ansible_distribution == 'Debian'
 
+- name: install zabbix-agent
+  apt:
+    pkg: zabbix-agent
+    update_cache: true
+    autoclean: true
+  when: ansible_distribution == 'Debian'
+
 - name: create /etc/zabbix/zabbix_agentd.d
   file:
     path: /etc/zabbix/zabbix_agentd.d
@@ -23,10 +30,3 @@
     - zabbix_agentd.conf
     - zabbix_agentd.psk
   notify: restart zabbix_agent
-
-- name: install zabbix-agent
-  apt:
-    pkg: zabbix-agent
-    update_cache: true
-    autoclean: true
-  when: ansible_distribution == 'Debian'
