@@ -98,7 +98,7 @@ TLSAccept=psk
 # Mandatory: no
 # Default:
 # TLSPSKIdentity=
-{% if zabbis_tls_psk_identity is defined %}
+{% if zabbix_password is defined %}
 TLSPSKIdentity={{ inventory_hostname }}
 {% endif %}
 
@@ -109,7 +109,7 @@ TLSPSKIdentity={{ inventory_hostname }}
 # Default:
 # TLSPSKFile=
 {% if zabbix_password is defined %}
-TLSPSKFile=/etc/zabbix_agentd.psk
+TLSPSKFile=/etc/zabbix/zabbix_agent2.psk
 {% endif %}
 
 ####### PLUGIN-SPECIFIC PARAMETERS #######

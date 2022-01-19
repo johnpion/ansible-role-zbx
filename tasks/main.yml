@@ -2,16 +2,21 @@
   apt:
     deb: "http://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+{{ ansible_distribution_release }}_all.deb"
   register: zbx_install_apt_repo
+  when: ansible_distribution == 'Debian'
 
 - name: apt update
   apt:
     update_cache: yes
-  when: zbx_install_apt_repo is changed
+  when:
+    - zbx_install_apt_repo is changed
+    - ansible_distribution == 'Debian'
 
 - name: set zabbix_agent_version for Debian Jessie
   set_fact:
     zabbix_agent_version: 1
-  when: ansible_distribution_release == 'jessie'
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_release == 'jessie'
 
 - name: create /etc/zabbix/
   file:
@@ -44,6 +49,7 @@
         useip: 1
         main: 1
     tls_psk_identity: "{{ inventory_hostname }}"
+    tls_accept: 2
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
   when: zabbix_password is defined

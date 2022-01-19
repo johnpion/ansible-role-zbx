@@ -5,6 +5,7 @@
       - zabbix_agentd
       - zabbix-agent
     state: absent
+  when: ansible_distribution == 'Debian'
 
 - name: config zabbix-agent2
   template:
@@ -23,3 +24,12 @@
     pkg: zabbix-agent2
     update_cache: true
     autoclean: true
+  when: ansible_distribution == 'Debian'
+
+- name: install zabbix-agent2 on Xen
+  yum:
+    name: http://repo.zabbix.com/zabbix/5.0/rhel/7/x86_64/zabbix-agent2-5.0.9-1.el7.x86_64.rpm
+    state: present
+  when:
+    - ansible_distribution == 'XenServer'
+    - ansible_distribution_major_version == '7'

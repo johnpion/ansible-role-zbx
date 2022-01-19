@@ -2,6 +2,7 @@
   apt:
     pkg: zabbix-agent2
     state: absent
+  when: ansible_distribution == 'Debian'
 
 - name: create /etc/zabbix/zabbix_agentd.d
   file:
@@ -28,3 +29,4 @@
     pkg: zabbix-agent
     update_cache: true
     autoclean: true
+  when: ansible_distribution == 'Debian'
