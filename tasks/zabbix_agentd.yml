@@ -30,3 +30,12 @@
     - zabbix_agentd.conf
     - zabbix_agentd.psk
   notify: restart zabbix_agent
+
+- name: copy user_parameter
+  copy:
+    src: user_parameter/
+    dest: /etc/zabbix/zabbix_agentd.d/
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+  notify: restart zabbix_agent

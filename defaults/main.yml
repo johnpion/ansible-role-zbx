@@ -9,3 +9,4 @@ zabbix_listen_ip: "{{ ansible_default_ipv4.address }}"
 zabbix_templates:
 - Template OS Linux
 - Template ICMP Ping
+zabbix_version: 5.0

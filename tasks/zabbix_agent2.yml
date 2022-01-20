@@ -20,7 +20,7 @@
     state: present
   when:
     - ansible_distribution == 'XenServer'
-    - ansible_distribution_major_version == '7'
+    - ansible_distribution_major_version | int == 7
 
 - name: config zabbix-agent2
   template:
@@ -32,4 +32,13 @@
   loop:
     - zabbix_agent2.conf
     - zabbix_agent2.psk
+  notify: restart zabbix_agent
+
+- name: copy user_parameter
+  copy:
+    src: user_parameter/
+    dest: /etc/zabbix/zabbix_agent2.d/
+    owner: zabbix
+    group: zabbix
+    mode: 0640
   notify: restart zabbix_agent

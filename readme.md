@@ -1,12 +1,8 @@
 # Ansible Role 'zbx'
 ## Description
-zabbix-agent2
+zabbix-agent and zabbix-agent2
 
 ## system
-OS: Debian
+OS: Debian 7,8,9,10
 
-version: 10
-
-## RoadMap
-
-add zabbix-agent v1 for backward compatibility
+OS: Citrix XenServer 7

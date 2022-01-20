@@ -2,7 +2,7 @@ galaxy_info:
   author:     John Seregin seregin.john@gmail.com
   license:    license Apache-2.0
   min_ansible_version: 2.9
-  description: zabbix-agent2
+  description: zabbix-agent and zabbix-agent2
 
   platforms:
   - name:     Debian
@@ -11,3 +11,6 @@ galaxy_info:
     - stretch
     - buster
     - bullseye
+  - name:     XenServer
+    versions:
+    - 7
