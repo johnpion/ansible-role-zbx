@@ -17,7 +17,7 @@
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
   when: zabbix_password is defined
-  no_log: true
+  # no_log: true
 
 - name: register zabbix-agent without password
   local_action:
@@ -34,4 +34,4 @@
         useip: 1
         main: 1
   when: not zabbix_password is defined
-  no_log: true
+  # no_log: true
