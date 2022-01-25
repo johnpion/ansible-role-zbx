@@ -43,5 +43,21 @@
   when: zabbix_agent_version == 2
 
 - name: register zabbix-agent
-  include_tasks: zabbix_register.yml
+  local_action:
+    module: zabbix_host
+    server_url: "{{ zabbix_url }}"
+    login_user: "{{ zabbix_user|default('ansible') }}"
+    login_password: "{{ zabbix_api_password }}"
+    host_name: "{{ inventory_hostname }}"
+    host_groups: "{{ zabbix_group }}"
+    link_templates: "{{ zabbix_templates }}"
+    interfaces:
+      - ip: "{{ zabbix_listen_ip }}"
+        type: 1
+        useip: 1
+        main: 1
+    tls_psk_identity: "{{ inventory_hostname }}"
+    tls_accept: 2
+    tls_connect: 2
+    tls_psk: "{{ zabbix_password }}"
   when: zabbix_url is defined

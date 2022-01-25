@@ -16,22 +16,22 @@
     tls_accept: 2
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
-  when: zabbix_password is defined
+  # when: zabbix_password is defined
   # no_log: true
 
-- name: register zabbix-agent without password
-  local_action:
-    module: zabbix_host
-    server_url: "{{ zabbix_url }}"
-    login_user: "{{ zabbix_user|default('ansible') }}"
-    login_password: "{{ zabbix_api_password }}"
-    host_name: "{{ inventory_hostname }}"
-    host_groups: "{{ zabbix_group }}"
-    link_templates: "{{ zabbix_templates }}"
-    interfaces:
-      - ip: "{{ zabbix_listen_ip }}"
-        type: 1
-        useip: 1
-        main: 1
-  when: not zabbix_password is defined
+# - name: register zabbix-agent without password
+#   local_action:
+#     module: zabbix_host
+#     server_url: "{{ zabbix_url }}"
+#     login_user: "{{ zabbix_user|default('ansible') }}"
+#     login_password: "{{ zabbix_api_password }}"
+#     host_name: "{{ inventory_hostname }}"
+#     host_groups: "{{ zabbix_group }}"
+#     link_templates: "{{ zabbix_templates }}"
+#     interfaces:
+#       - ip: "{{ zabbix_listen_ip }}"
+#         type: 1
+#         useip: 1
+#         main: 1
+#   when: not zabbix_password is defined
   # no_log: true
