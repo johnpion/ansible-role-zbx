@@ -61,3 +61,8 @@
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
   when: zabbix_url is defined
+
+- name: install zabbix_get
+  apt:
+    pkg: zabbix-get
+    autoclean: true

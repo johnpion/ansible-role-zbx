@@ -4,10 +4,10 @@
 
 Hostname={{ inventory_hostname }}
 
-Server={{ zabbix_server }}
+Server=127.0.0.1,{{ zabbix_server }}
 ServerActive={{ zabbix_server_active }}
 
-ListenIP={{ zabbix_listen_ip }}
+ListenIP=127.0.0.1,{{ zabbix_listen_ip }}
 
 PidFile=/var/run/zabbix/zabbix_agent2.pid
 ControlSocket=/var/run/zabbix/zabbix_agent2.sock

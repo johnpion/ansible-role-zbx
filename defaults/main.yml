@@ -8,4 +8,6 @@ zabbix_listen_ip: "{{ ansible_default_ipv4.address }}"
 # zabbix_group:
 zabbix_templates:
 - Template OS Linux
+- Template mdadm
+- Template Module SMART by Zabbix agent 2
 zabbix_version: 5.0
