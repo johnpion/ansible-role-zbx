@@ -66,3 +66,8 @@
   apt:
     pkg: zabbix-get
     autoclean: true
+
+- name: add user zabbix to sudoers
+  fileinline:
+    path: /etc/sudoers
+    line: "zabbix ALL=(ALL) NOPASSWD:/usr/sbin/smartctl"
