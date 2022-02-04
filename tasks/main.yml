@@ -68,6 +68,6 @@
     autoclean: true
 
 - name: add user zabbix to sudoers
-  fileinline:
+  lineinfile:
     path: /etc/sudoers
     line: "zabbix ALL=(ALL) NOPASSWD:/usr/sbin/smartctl"
