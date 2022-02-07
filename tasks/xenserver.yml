@@ -1,0 +1,60 @@
+- name: delete zabbix-agent on Xen
+  yum:
+    name: zabbix-agent
+    state: absent
+
+- name: chech if zabbix_agent2 is installed
+  stat:
+    path: /usr/sbin/zabbix_agent2
+  register: zabbix_agent2
+
+- name: get latest minor version
+  delegate_to: localhost
+  shell: "curl --silent http://repo.zabbix.com/zabbix/{{ zabbix_version }}/rhel/7/x86_64/ | grep zabbix-agent2 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d . -f 3 | cut -d '-' -f 1 | sort -g | tail -n 1"
+  register: zabbix_latest_minor_version_curl
+  when: not zabbix_agent2.stat.exists
+
+- name: set latest minor version
+  set_fact:
+    zabbix_latest_minor_version: "{{ zabbix_latest_minor_version_curl.stdout }}"
+  when: not zabbix_agent2.stat.exists
+
+- name: debug
+  debug:
+    msg: "{{ zabbix_latest_minor_version }}"
+  when: not zabbix_agent2.stat.exists
+
+- name: install zabbix-agent2 on Xen
+  yum:
+    name:
+      - http://repo.zabbix.com/zabbix/{{ zabbix_version }}/rhel/7/x86_64/zabbix-agent2-{{ zabbix_version }}.{{ zabbix_latest_minor_version }}-1.el7.x86_64.rpm
+      - http://repo.zabbix.com/zabbix/{{ zabbix_version }}/rhel/7/x86_64/zabbix-get-{{ zabbix_version }}.{{ zabbix_latest_minor_version }}-1.el7.x86_64.rpm
+    state: present
+  when: not zabbix_agent2.stat.exists
+
+- name: config zabbix-agent2
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/zabbix/{{ item }}"
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+  loop:
+    - zabbix_agent2.conf
+    - zabbix_agent2.psk
+  notify: restart zabbix_agent
+
+- name: copy user_parameter
+  copy:
+    src: user_parameter/
+    dest: /etc/zabbix/zabbix_agent2.d/
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+  notify: restart zabbix_agent
+
+- name: add user zabbix to sudoers
+  lineinfile:
+    path: /etc/sudoers
+    line: "zabbix ALL=(ALL) NOPASSWD:/usr/sbin/smartctl"
+    validate: /usr/sbin/visudo -cf %s

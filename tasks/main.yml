@@ -1,31 +1,3 @@
-- name: set zabbix version for Debian Wheezy
-  set_fact:
-    zabbix_version: 3.0
-  when:
-    - ansible_distribution == 'Debian'
-    - ansible_distribution_major_version | int == 7
-
-- name: install apt repo for zabbix {{ zabbix_version }}
-  apt:
-    deb: "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release }}_all.deb"
-  register: zbx_install_apt_repo
-  when:
-    - ansible_distribution == 'Debian'
-
-- name: apt update
-  apt:
-    update_cache: yes
-  when:
-    - zbx_install_apt_repo is changed
-    - ansible_distribution == 'Debian'
-
-- name: set zabbix_agent_version for Debian Wheezy or Jessie
-  set_fact:
-    zabbix_agent_version: 1
-  when:
-    - ansible_distribution == 'Debian'
-    - ansible_distribution_major_version | int <= 8
-
 - name: create /etc/zabbix/
   file:
     path: /etc/zabbix/
@@ -34,13 +6,16 @@
     state: directory
     mode: 0755
 
-- name: zabbix_agentd (legacy)
-  include_tasks: zabbix_agentd.yml
-  when: zabbix_agent_version == 1
+- name: debian
+  import_tasks: debian.yml
+  when:
+    - ansible_distribution == 'Debian'
 
-- name: zabbix_agent2 (current)
-  include_tasks: zabbix_agent2.yml
-  when: zabbix_agent_version == 2
+- name: xenserver
+  import_tasks: xenserver.yml
+  when:
+    - ansible_distribution == 'XenServer'
+    - ansible_distribution_major_version | int == 7
 
 - name: register zabbix-agent
   local_action:
@@ -61,13 +36,3 @@
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
   when: zabbix_url is defined
-
-- name: install zabbix_get
-  apt:
-    pkg: zabbix-get
-    autoclean: true
-
-- name: add user zabbix to sudoers
-  lineinfile:
-    path: /etc/sudoers
-    line: "zabbix ALL=(ALL) NOPASSWD:/usr/sbin/smartctl"
