@@ -10,4 +10,4 @@ zabbix_templates:
 - Template OS Linux
 - Template mdadm
 - Template Module SMART by Zabbix agent 2
-zabbix_version: 5.0
+zabbix_version: 6.0
