@@ -1,3 +1,7 @@
+- name:                   set zabbix version
+  set_fact:
+    zabbix_version:       "{{ zabbix_version_major }}.{{ zabbix_version_minor }}"
+
 - name: create /etc/zabbix/
   file:
     path: /etc/zabbix/

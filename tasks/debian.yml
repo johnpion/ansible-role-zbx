@@ -7,6 +7,12 @@
 - name:                   install apt repo for zabbix {{ zabbix_version }}
   apt:
     deb:                  "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release }}_all.deb"
+  when: zabbix_version_major < 6
+
+- name:                   install apt repo for zabbix {{ zabbix_version }}
+  apt:
+    deb:                  "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+debian{{ ansible_distribution_major_version }}_all.deb"
+  when: zabbix_version_major == 6
 
 - name:                   install zabbix_get
   apt:
