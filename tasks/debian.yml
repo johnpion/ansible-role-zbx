@@ -6,13 +6,13 @@
 
 - name:                   install apt repo for zabbix {{ zabbix_version }}
   apt:
-    deb:                  "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-4+{{ ansible_distribution_release }}_all.deb"
-  when: zabbix_version_major < 6
+    deb:                  "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release }}_all.deb"
+  when: zabbix_version_major | int < 6
 
 - name:                   install apt repo for zabbix {{ zabbix_version }}
   apt:
     deb:                  "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-4+debian{{ ansible_distribution_major_version }}_all.deb"
-  when: zabbix_version_major == 6
+  when: zabbix_version_major | int == 6
 
 - name:                   install zabbix_get
   apt:
@@ -28,15 +28,15 @@
 
 - name:                   zabbix_agentd (legacy)
   include_tasks:          debian_zabbix_agentd.yml
-  when:                   zabbix_agent_version == 1
+  when:                   zabbix_agent_version | int == 1
 
 - name:                   zabbix_agent2 (current)
   include_tasks:          debian_zabbix_agent2.yml
-  when:                   zabbix_agent_version == 2
+  when:                   zabbix_agent_version | int == 2
 
 - name: add user zabbix to sudoers
   lineinfile:
     path: /etc/sudoers
     line: "zabbix ALL=(ALL) NOPASSWD:/usr/sbin/smartctl"
     validate: /usr/sbin/visudo -cf %s
-  when: ansible_virtualization_tech_guest|length == 0
+  when: ansible_virtualization_tech_guest | length == 0
