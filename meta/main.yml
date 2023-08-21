@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Ivan Serohin
+  license: license Apache-2.0
+  min_ansible_version: "2.9"
+  description: zabbix-agent and zabbix-agent2
+  role_name: zbx
+  namespace: johnpion
+
+  platforms:
+    - name: Debian
+      versions:
+        - wheezy
+        - stretch
+        - buster
+        - bullseye
+    # - name: EL
+    #   versions:
+    #     - "7"

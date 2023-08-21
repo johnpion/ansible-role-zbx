@@ -1,0 +1,24 @@
+#Generated with Ansible. Do not manually edit this file!
+#/etc/ansible/roles/zbx/templates/zabbix_agentd.conf.j2
+#File version 0.04 (issue007)
+
+Hostname={{ inventory_hostname }}
+
+Server=127.0.0.1{% for ip in zabbix_server_ip %},{{ ip }}{% endfor %}
+
+ServerActive={{ zabbix_server_active }}
+
+ListenIP=127.0.0.1,{{ zabbix_listen_ip }}
+
+LogFile=/var/log/zabbix/zabbix_agentd.log
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+Include=/etc/zabbix/zabbix_agentd.d
+
+UserParameter=mdadm.status,egrep -c "\[.*_.*\]" /proc/mdstat
+
+{% if zabbix_password is defined %}
+TLSConnect=psk
+TLSAccept=psk
+TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
+TLSPSKIdentity={{ inventory_hostname }}
+{% endif %}
