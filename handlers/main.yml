@@ -1,15 +1,15 @@
-- name: restart zabbix-agent
-  service:
+- name: Restart zabbix-agent
+  ansible.builtin.service:
     name: zabbix-agent
     state: restarted
-    enabled: yes
-  listen: restart zabbix_agent
+    enabled: true
+  listen: Restart zabbix_agent
   when: zabbix_agent_version == 1
 
-- name: restart zabbix-agent2
-  service:
+- name: Restart zabbix-agent2
+  ansible.builtin.service:
     name: zabbix-agent2
     state: restarted
-    enabled: yes
-  listen: restart zabbix_agent
+    enabled: true
+  listen: Restart zabbix_agent
   when: zabbix_agent_version == 2

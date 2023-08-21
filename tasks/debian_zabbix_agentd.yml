@@ -1,39 +1,39 @@
-- name: delete zabbix-agent2
-  apt:
+- name: Delete zabbix-agent2
+  ansible.builtin.apt:
     pkg: zabbix-agent2
     state: absent
 
-- name: install zabbix-agent
-  apt:
+- name: Install zabbix-agent
+  ansible.builtin.apt:
     pkg: zabbix-agent
     update_cache: true
     autoclean: true
 
-- name: create /etc/zabbix/zabbix_agentd.d
-  file:
+- name: Create /etc/zabbix/zabbix_agentd.d
+  ansible.builtin.file:
     path: /etc/zabbix/zabbix_agentd.d
     owner: zabbix
     group: zabbix
     state: directory
-    mode: 0750
+    mode: "0750"
 
-- name: config zabbix-agent
-  template:
+- name: Config zabbix-agent
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "/etc/zabbix/{{ item }}"
     owner: zabbix
     group: zabbix
-    mode: 0640
+    mode: "0640"
   loop:
     - zabbix_agentd.conf
     - zabbix_agentd.psk
-  notify: restart zabbix_agent
+  notify: Restart zabbix_agent
 
-- name: copy user_parameter
-  copy:
+- name: Copy user_parameter
+  ansible.builtin.copy:
     src: user_parameter/
     dest: /etc/zabbix/zabbix_agentd.d/
     owner: zabbix
     group: zabbix
-    mode: 0640
-  notify: restart zabbix_agent
+    mode: "0640"
+  notify: Restart zabbix_agent

@@ -1,11 +1,14 @@
 #Generated with Ansible. Do not manually edit this file!
 #/etc/ansible/roles/zbx/templates/zabbix_agent2.conf.j2
-#File version 0.03 (issue004)
+#File version 0.05 (issue007)
 
 Hostname={{ inventory_hostname }}
 
-Server=127.0.0.1,{{ zabbix_server }},{{ zabbix_listen_ip }}
+Server=127.0.0.1{% for ip in zabbix_server_ip %},{{ ip }}{% endfor %}
+
+{% if zabbix_server_active is defined %}
 ServerActive={{ zabbix_server_active }}
+{% endif %}
 
 ListenIP=127.0.0.1,{{ zabbix_listen_ip }}
 

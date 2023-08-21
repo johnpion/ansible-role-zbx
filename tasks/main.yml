@@ -1,32 +1,41 @@
-- name:                   set zabbix version
-  set_fact:
-    zabbix_version:       "{{ zabbix_version_major }}.{{ zabbix_version_minor }}"
+- name: Set zabbix version
+  ansible.builtin.set_fact:
+    zabbix_version: "{{ zabbix_version_major }}.{{ zabbix_version_minor }}"
 
-- name: create /etc/zabbix/
-  file:
+- name: Show zabbix version
+  ansible.builtin.debug:
+    msg: "zabbix_version: {{ zabbix_version }}"
+
+- name: Create /etc/zabbix/
+  ansible.builtin.file:
     path: /etc/zabbix/
     owner: root
     group: root
     state: directory
-    mode: 0755
+    mode: "0750"
 
-- name: debian
-  import_tasks: debian.yml
+- name: Debian
+  ansible.builtin.import_tasks: debian.yml
   when:
     - ansible_distribution == 'Debian'
 
-- name: xenserver
-  import_tasks: xenserver.yml
+- name: Xenserver
+  ansible.builtin.import_tasks: xenserver.yml
   when:
     - ansible_distribution == 'XenServer'
     - ansible_distribution_major_version | int == 7
 
-- name: register zabbix-agent
-  local_action:
-    module: zabbix_host
-    server_url: "{{ zabbix_url }}"
-    login_user: "{{ zabbix_user|default('ansible') }}"
-    login_password: "{{ zabbix_api_password }}"
+- name: Register zabbix-agent
+  delegate_to: "{{ zabbix_server }}"
+  vars:
+    ansible_network_os: community.zabbix.zabbix
+    ansible_connection: httpapi
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_user: "{{ zabbix_user }}"
+    ansible_httpapi_pass: "{{ zabbix_api_password }}"
+    ansible_zabbix_url_path: ""
+  community.zabbix.zabbix_host:
     host_name: "{{ inventory_hostname }}"
     host_groups: "{{ zabbix_group }}"
     link_templates: "{{ zabbix_templates }}"
@@ -39,4 +48,5 @@
     tls_accept: 2
     tls_connect: 2
     tls_psk: "{{ zabbix_password }}"
-  when: zabbix_url is defined
+  when: zabbix_server is defined
+  tags: qa
