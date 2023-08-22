@@ -3,15 +3,23 @@
     zabbix_version: "3.0"
   when: ansible_distribution_major_version | int == 7
 
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: apt
+
 - name: Install apt repo for zabbix {{ zabbix_version }}
   ansible.builtin.apt:
     deb: "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release }}_all.deb"
-  when: zabbix_version_major | int < 6
+  when:
+    - zabbix_version_major | int < 6
+    - "'zabbix-release' not in ansible_facts.packages"
 
 - name: Install apt repo for zabbix {{ zabbix_version }}
   ansible.builtin.apt:
     deb: "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-4+debian{{ ansible_distribution_major_version }}_all.deb"
-  when: zabbix_version_major | int == 6
+  when:
+    - zabbix_version_major | int == 6
+    - "'zabbix-release' not in ansible_facts.packages"
 
 - name: Install zabbix_get
   ansible.builtin.apt:
