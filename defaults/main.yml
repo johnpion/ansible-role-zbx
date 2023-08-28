@@ -10,3 +10,7 @@ zabbix_templates:
 zabbix_version_major: '5'
 zabbix_version_minor: '0'
 zabbix_user: ansible
+
+### issue009
+zabbix_version_major_for_xenserver: '5'
+zabbix_version_minor_for_xenserver: '30'
