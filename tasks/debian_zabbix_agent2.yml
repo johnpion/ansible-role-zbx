@@ -23,6 +23,7 @@
     - zabbix_agent2.conf
     - zabbix_agent2.psk
   notify: Restart zabbix_agent
+  when: zabbix_server is defined
 
 - name: Copy user_parameter
   ansible.builtin.copy:
