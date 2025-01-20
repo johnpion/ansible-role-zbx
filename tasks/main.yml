@@ -37,7 +37,8 @@
     ansible_zabbix_url_path: ""
   community.zabbix.zabbix_host:
     host_name: "{{ inventory_hostname }}"
-    host_groups: "{{ zabbix_group }}"
+    host_groups: 
+      - "{{ zabbix_group }}"
     link_templates: "{{ zabbix_templates }}"
     interfaces:
       - ip: "{{ zabbix_listen_ip }}"
