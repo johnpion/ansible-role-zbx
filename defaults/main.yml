@@ -7,10 +7,13 @@ zabbix_templates:
   - "Template OS Linux"
   - "Template Module SMART by Zabbix agent 2"
 # - Template mdadm
-zabbix_version_major: '5'
+zabbix_version_major: '7'
 zabbix_version_minor: '0'
 zabbix_user: ansible
 
 ### issue009
 zabbix_version_major_for_xenserver: '5'
 zabbix_version_minor_for_xenserver: '30'
+
+zabbix_api_port: 443
+zabbix_api_ssl: true
