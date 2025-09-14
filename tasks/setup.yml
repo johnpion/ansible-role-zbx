@@ -1,0 +1,18 @@
+- name: Create /etc/zabbix/
+  ansible.builtin.file:
+    path: /etc/zabbix/
+    owner: root
+    group: root
+    state: directory
+    mode: "0755"
+
+- name: Debian
+  ansible.builtin.import_tasks: debian.yml
+  when:
+    - ansible_distribution == 'Debian'
+
+- name: Xenserver
+  ansible.builtin.import_tasks: xenserver.yml
+  when:
+    - ansible_distribution == 'XenServer'
+    - ansible_distribution_major_version | int == 7

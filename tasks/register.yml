@@ -1,0 +1,23 @@
+- name: Register zabbix-agent
+  delegate_to: "{{ zabbix_server }}"
+  vars:
+    ansible_network_os: community.zabbix.zabbix
+    ansible_connection: httpapi
+    ansible_httpapi_port: "{{ zabbix_api_port }}"
+    ansible_httpapi_use_ssl: "{{ zabbix_api_ssl }}"
+    ansible_user: "{{ zabbix_user }}"
+    ansible_httpapi_pass: "{{ zabbix_api_password }}"
+    ansible_zabbix_url_path: ""
+  community.zabbix.zabbix_host:
+    host_name: "{{ inventory_hostname }}"
+    host_groups: "{{ zabbix_group }}"
+    link_templates: "{{ zabbix_templates }}"
+    interfaces:
+      - ip: "{{ zabbix_listen_ip }}"
+        type: 1
+        useip: 1
+        main: 1
+    tls_psk_identity: "{{ inventory_hostname }}"
+    tls_accept: 2
+    tls_connect: 2
+    tls_psk: "{{ zabbix_password }}"
