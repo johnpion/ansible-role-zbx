@@ -1,5 +1,6 @@
+# ansible-lint
 - name: Delete zabbix-agent on Xen
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: zabbix-agent
     state: absent
 
@@ -8,8 +9,9 @@
     path: /usr/sbin/zabbix_agent2
   register: zabbix_agent2
 
+# ansible-lint
 - name: Install zabbix-agent2 on Xen
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - http://repo.zabbix.com/zabbix/{{ zabbix_version_major_for_xenserver }}/rhel/7/x86_64/zabbix-agent2-{{ zabbix_version_major_for_xenserver }}.{{ zabbix_version_minor_for_xenserver }}-1.el7.x86_64.rpm
       - http://repo.zabbix.com/zabbix/{{ zabbix_version_major_for_xenserver }}/rhel/7/x86_64/zabbix-get-{{ zabbix_version_major_for_xenserver }}.{{ zabbix_version_minor_for_xenserver }}-1.el7.x86_64.rpm
