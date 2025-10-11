@@ -28,7 +28,7 @@
     update_cache: true
   when:
     - zabbix_version_major | int <= 7
-  
+
 - name: Set zabbix_agent_version for Debian Wheezy or Jessie
   ansible.builtin.set_fact:
     zabbix_agent_version: "1"
