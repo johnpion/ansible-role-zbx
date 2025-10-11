@@ -1,16 +1,3 @@
-- name: Debug
-  ansible.builtin.debug:
-    msg:
-      - "ansible_httpapi_port: {{ zabbix_api_port }}"
-      - "ansible_httpapi_use_ssl: {{ zabbix_api_ssl }}"
-      - "ansible_user: {{ zabbix_user }}"
-      - "host_name: {{ inventory_hostname }}"
-      - "zabbix_group: {{ zabbix_group }}"
-      - "zabbix_templates: {{ zabbix_templates }}"
-      - "zabbix_listen_ip: {{ zabbix_listen_ip }}"
-      - "zabbix_server: {{ zabbix_server }}"
-      - "zabbix_server_ip: {{ zabbix_server_ip }}"
-
 - name: Register zabbix-agent
   delegate_to: "{{ zabbix_server }}"
   vars:
