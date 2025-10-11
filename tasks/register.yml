@@ -9,7 +9,7 @@
       - "zabbix_templates: {{ zabbix_templates }}"
       - "zabbix_listen_ip: {{ zabbix_listen_ip }}"
       - "zabbix_server: {{ zabbix_server }}"
-      - "zabbix_server_ip: {{ zabbix_server }}"
+      - "zabbix_server_ip: {{ zabbix_server_ip }}"
 
 - name: Register zabbix-agent
   delegate_to: "{{ zabbix_server }}"
