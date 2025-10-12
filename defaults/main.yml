@@ -1,12 +1,10 @@
 zabbix_agent_version: 2
-zabbix_server_ip: null
+zabbix_server_ip: []
 zabbix_server: null
 zabbix_server_active: "{{ zabbix_server }}"
 zabbix_listen_ip: "{{ ansible_default_ipv4.address }}"
 zabbix_templates:
   - "Template OS Linux"
-  # - "Template Module SMART by Zabbix agent 2"
-  # - Template mdadm
 zabbix_version_major: '7'
 zabbix_version_minor: '0'
 zabbix_user: ansible
