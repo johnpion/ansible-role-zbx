@@ -4,7 +4,9 @@
     state: restarted
     enabled: true
   listen: Restart zabbix_agent
-  when: zabbix_agent_version == 1
+  when:
+    - zabbix_agent_version == 1
+    - not ansible_check_mode
 
 - name: Restart zabbix-agent2
   ansible.builtin.service:
@@ -12,4 +14,6 @@
     state: restarted
     enabled: true
   listen: Restart zabbix_agent
-  when: zabbix_agent_version == 2
+  when:
+    - zabbix_agent_version == 2
+    - not ansible_check_mode
