@@ -18,7 +18,7 @@
   ansible.builtin.apt:
     deb: "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian{{ ansible_distribution_major_version }}_all.deb"
   when:
-    - zabbix_version_major | int == 6
+    - zabbix_version_major | int >= 6
     - "'zabbix-release' not in ansible_facts.packages"
 
 - name: Install zabbix_get
